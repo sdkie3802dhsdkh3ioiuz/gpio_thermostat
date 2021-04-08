@@ -5,3 +5,4 @@
 /usr/sbin/gpioctl gpio0 7 set in pin4
 /usr/sbin/gpioctl gpio0 12 set in pin2
 /usr/sbin/gpioctl gpio0 16 set in pin1
+/usr/sbin/gpioctl gpio0 21 set out therm
