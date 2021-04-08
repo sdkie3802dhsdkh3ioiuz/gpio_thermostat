@@ -1,0 +1,8 @@
+/usr/sbin/gpioctl gpio0 23 set out pin64
+/usr/sbin/gpioctl gpio0 24 set out pin32
+/usr/sbin/gpioctl gpio0 25 set out pin16
+/usr/sbin/gpioctl gpio0 8 set out pin8
+/usr/sbin/gpioctl gpio0 7 set out pin4
+/usr/sbin/gpioctl gpio0 12 set out pin2
+/usr/sbin/gpioctl gpio0 16 set out pin1
+/usr/sbin/gpioctl gpio0 21 set out pinalert
