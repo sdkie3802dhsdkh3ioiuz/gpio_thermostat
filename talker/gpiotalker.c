@@ -16,6 +16,9 @@
 #include <fcntl.h>
 #define SERVERPORT "4950"       // the port users will be connecting to
 #define SERVER "listener.my.domain"	// the computer we're sending to
+#define THERM_PIN 21
+#define MAX_TEMP 74
+
 int main()
 {
         int sockfd;
@@ -65,10 +68,20 @@ int main()
                         perror("talker: sendto");
                         exit(1);
                 }
+        /* BEGIN an added section */
+                memset(&op, 0, sizeof(op));
+                op.gp_pin = THERM_PIN;
+                if (sum >= MAX_TEMP) {
+                        op.gp_value = GPIO_PIN_HIGH;
+                } else {
+                        op.gp_value = GPIO_PIN_LOW;
+                }
+                if (ioctl(devfd, GPIOPINWRITE, &op))
+                        fprintf(stderr, "pin write error\n");
+        /* END added section */        
                 sleep(10);
         }
         freeaddrinfo(servinfo);
-        printf("talker: sent %d bytes to %s\n", numbytes, SERVER);
         close(sockfd);
         return 0;
 }
