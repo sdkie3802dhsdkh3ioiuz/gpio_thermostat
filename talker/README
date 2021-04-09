@@ -1,0 +1,3 @@
+This Raspberry Pi reads the temperature from the Arduino and sends it out over UDP to Listener.
+The connection is protected by the VPN.
+Talker is connected to the Arduino. The wiring is in the arduino script comments.
