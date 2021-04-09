@@ -1,0 +1,5 @@
+# Talker's /etc/hosts
+127.0.0.1 localhost
+::1 localhost
+# replace x.x.x.x below with listener's actual IP
+x.x.x.x listener.my.domain
