@@ -1,5 +1,10 @@
-* modified version of Brian "Beej Jorgensen" Hall's talker.c
+/* modified version of Brian "Beej Jorgensen" Hall's talker.c
 ** gpiotalker.c 
+
+ **	Compile the code below as a regular user by doing clang -o
+ **	gpiotalker gpiotalker.c. Then copy gpiotalker to /usr/local/bin
+ ** 	and /sbin/chown root._gpiotalker /usr/local/bin/gpiotalker ;
+ **	/bin/chmod 755 /usr/local/bin/gpiotalker.
 */
 #include <stdio.h>
 #include <stdlib.h>
