@@ -1,7 +1,29 @@
 #!/bin/ksh
+# Create the _gpiotalker user:
+#   /usr/sbin/adduser to add a user called _gpiotalker.
+#   Use chpass to change its password to an asterisk.
+
+# Changing user database information for _gpiotalker.
+#Login: _gpiotalker
+
+# Login: _gpiotalker
+# Encrypted password: *
+# Uid [#]: 1001
+# Gid [# or name]: 1001
+# Change [month day year]:
+# Expire [month day year]:
+# Class:
+# Home directory: /var/emtpy
+# Shell: /sbin/nologin
+# Full Name: _gpiotalker
+# Office Location:
+# Office Phone:
+# Home Phone:
+
 # /sbin/chown root._gpiotalker /etc/rc.d/gpiotalker
 # /bin/chmod 755 /etc/rc.d/gpiotalker
 # I belive "other" does need read/execute. i.e. 750 won't do
+
 daemon="/usr/local/bin/gpiotalker"
 . /etc/rc.d/rc.subr
 rc_reload=NO
