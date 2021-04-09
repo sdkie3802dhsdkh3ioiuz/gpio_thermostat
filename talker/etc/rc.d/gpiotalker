@@ -1,4 +1,7 @@
 #!/bin/ksh
+# /sbin/chown root._gpiotalker /etc/rc.d/gpiotalker
+# /bin/chmod 755 /etc/rc.d/gpiotalker
+# I belive "other" does need read/execute. i.e. 750 won't do
 daemon="/usr/local/bin/gpiotalker"
 . /etc/rc.d/rc.subr
 rc_reload=NO
