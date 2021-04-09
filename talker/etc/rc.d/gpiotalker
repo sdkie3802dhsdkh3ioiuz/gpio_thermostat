@@ -1,0 +1,5 @@
+#!/bin/ksh
+daemon="/usr/local/bin/gpiotalker"
+. /etc/rc.d/rc.subr
+rc_reload=NO
+rc_cmd $1
