@@ -1,0 +1,5 @@
+# Talker's /etc/rc.local
+# add these lines to make sure gpiotalker daemon can access
+# GPIO pins on startup and after upates
+/bin/chgrp _gpiotalker /dev/gpio0
+/bin/chmod 660 /dev/gpio0
