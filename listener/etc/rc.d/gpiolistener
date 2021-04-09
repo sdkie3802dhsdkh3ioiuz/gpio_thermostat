@@ -1,0 +1,30 @@
+#!/bin/ksh
+# Create the _gpiolistener user:
+#   /usr/sbin/adduser to add a user called _gpiolistener.
+#   Use chpass to change its password to an asterisk.
+
+# Changing user database information for _gpiolistener.
+#Login: _gpiolistener
+
+# Login: _gpiolistener
+# Encrypted password: *
+# Uid [#]: 1001
+# Gid [# or name]: 1001
+# Change [month day year]:
+# Expire [month day year]:
+# Class:
+# Home directory: /var/emtpy
+# Shell: /sbin/nologin
+# Full Name: _gpiolistener
+# Office Location:
+# Office Phone:
+# Home Phone:
+
+# /sbin/chown root._gpiolistener /etc/rc.d/gpiolistener
+# /bin/chmod 755 /etc/rc.d/gpiolistener
+# I belive "other" does need read/execute. i.e. 750 won't do
+
+daemon="/usr/local/bin/gpiolistener"
+. /etc/rc.d/rc.subr
+rc_reload=NO
+rc_cmd $1

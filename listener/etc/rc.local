@@ -1,0 +1,5 @@
+# Listener's /etc/rc.local
+# add these lines to make sure gpiolistener daemon can access
+# GPIO pins on startup and after upates
+/bin/chgrp _gpiolistener /dev/gpio0
+/bin/chmod 660 /dev/gpio0
