@@ -1,0 +1,3 @@
+# Listener's rc.conf.local
+# mimimum needed to start gpiolistener daemon on bootup
+pkg_scripts=gpiolistener
