@@ -10,6 +10,10 @@ int pins[] = {12, 11, 10, 9, 8, 7, 6};
 int places[] = {64, 32, 16, 8, 4, 2, 1};
 // we use 7 pins in order to be able to
 // represent temperatures from 0 to 127
+// Connect the 7 pins on the Arduino to 7 pins on the Talker's (one of
+// the Raspberry Pi's) GPIO pins. On the Arduino I'm using pins 12, 11,
+// 10, 9, 8, 7, 6, to connect to the Pi's GPIO pins 23, 24, 25, 8, 7, 12,
+// 16, respectively
 #define NUM_PINS 7 
 void setup() {
   for (int i = 0; i < NUM_PINS; i++) {
