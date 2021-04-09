@@ -1,5 +1,6 @@
 /* modified version of Brian "Beej Jorgensen" Hall's listener.c
 ** gpiolistener.c
+** will later add code to see if signal from talker is stale
 */
 #include <stdio.h>
 #include <stdlib.h>
