@@ -1,0 +1,46 @@
+.\" $Id$
+.\"
+.\" Copyright (c) 2021 Sven G
+.\"
+.\" Permission to use, copy, modify, and distribute this software for any
+.\" purpose with or without fee is hereby granted, provided that the above
+.\" copyright notice and this permission notice appear in all copies.
+.\"
+.\" THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+.\" WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+.\" MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+.\" ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+.\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+.\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+.\"
+.\"
+.Dd $Mdocdate$
+.Dt GPIOTALKER 1
+.Os
+.Sh NAME
+.Nm gpiotalker
+.Nd daemon to read temperature from Arduino and act as thermostat
+.Sh SYNOPSIS
+.Nm gpiotalker
+.Sh DESCRIPTION
+The
+.Nm
+daemon reads the temperature from GPIO input pins as a binary number, sends the integer form over UDP to a specified IP, and turns on a GPIO output pin if the temperature exceeds a given threshhold.
+.Sh FILES
+.Bl -tag -width "/etc/rc.securelevel" -compact
+.It Pa /etc/rc.securevel
+The GPIO pins must be configured at securelevel 0
+.El
+.Sh EXIT STATUS
+.Ex -std
+.Sh SEE ALSO
+.Xr gpiolistener 1 ,
+.Xr gpioctl 8 ,
+.Xr rc.securelevel 8
+.Sh AUTHORS
+Most of the code was copied from talker.c in Beej's Guide to Network Programming.
+The GPIO code was added by
+.An Sven G .
+.Sh BUGS
+The UDP port, the GPIO pin numbers, and the temperature threshhold are hard-coded.
