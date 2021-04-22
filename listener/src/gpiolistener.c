@@ -2,6 +2,7 @@
 ** gpiolistener.c
 ** will later add code to see if signal from talker is stale
 */
+#include <time.h>	// for checking for stale signal
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -18,10 +19,12 @@
 // BEGIN a section I added
 #define NUM_PINS 7
 #define ALERT_PIN 21
+#define STALE_PIN 20
 #define UPPER_TEMP 75
 #define LOWER_TEMP 40
 #define MAX_REPRESENT_TEMP 127
 #define MIN_REPRESENT_TEMP 0
+#define WAIT_FOR_TALKER 20
 // END a section I added
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa)
@@ -33,6 +36,11 @@ void *get_in_addr(struct sockaddr *sa)
 }
 int main(int argc, char *argv[])
 {
+	/* ADDED section to declare variable for checking stale signal */
+	struct timeval tv { .tv_sec = WAIT_FOR_TALKER, .tv_usec = 0 };
+	time_t curr = time(NULL);
+	time_t prev = curr - 86400;	/* make sure prev is stale */
+	/* end declarations for stale signal checking */
         int sockfd;
         struct addrinfo hints, *servinfo, *p;
         int rv;
@@ -92,6 +100,8 @@ int main(int argc, char *argv[])
                         perror("listener: socket");
                         continue;
                 }
+		fcntl(sockfd, O_NONBLOCK);	/* ADDED. think needed so can continue if no
+							signal received from Talker */
                 if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
                         close(sockfd);
                         perror("listener: bind");
@@ -109,16 +119,35 @@ int main(int argc, char *argv[])
         // and send the temperature as data instead of a string
         while(1) {
                 addr_len = sizeof their_addr;
-                if ((recvfrom(sockfd, &temperature, sizeof temperature, 0,
-                        (struct sockaddr *)&their_addr, &addr_len)) == -1) {
-                        perror("recvfrom");
-                 exit(1);
-                }
+		
+		/* ADDED. timeout, don't hang if receive from talker fails */
+		setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
+		
+		/* CHANGED. don't want exit if fails */
+		if ((recvfrom(sockfd, &temperature, sizeof temperature, 0,
+                    (struct sockaddr *)&their_addr, &addr_len)) != -1) {
+			prev = curr;	/* only reset previous time value if we didn't timeout */
+		}
         // END a section I modified
         /* BEGIN section I added to write to the GPIO pins.
 	   We bitwise compare the temperature to 64, 32,
            16, 8, 4, 2, 1 and write to the corresponding pin
         */
+		/* turn on stale pin if data is stale */
+		if (curr - prev > WAIT_FOR_TALKER) {
+			/* ADDED. refactor, put in function later */
+			memset(&op, 0, sizeof(op));
+                        op.gp_pin = STALE_PIN;
+                        op.gp_value = GPIO_PIN_HIGH;
+                        ioctl(devfd, GPIOPINWRITE, &op);
+		} else { 
+			memset(&op, 0, sizeof(op));
+                        op.gp_pin = STALE_PIN;
+                        op.gp_value = GPIO_PIN_HIGH;
+                        ioctl(devfd, GPIOPINWRITE, &op);
+		}
+		
+		/* light up LEDs to display temperature */
                 for (i = 0; i < NUM_PINS; i++) {
                         memset(&op, 0, sizeof(op));
                         op.gp_pin = pins[i];
@@ -127,6 +156,7 @@ int main(int argc, char *argv[])
                         } else {
                                 op.gp_value = GPIO_PIN_LOW;
                         }
+			ioctl(devfd, GPIOPINWRITE, &op); /* don't forget to actually write to the pin */
                 }
                 // light up alert PIN if outside desired range
                 if (temperature  >= upper_temp || temperature <= lower_temp) {
@@ -140,7 +170,8 @@ int main(int argc, char *argv[])
                  op.gp_value = GPIO_PIN_LOW;
                         ioctl(devfd, GPIOPINWRITE, &op);
                 }
-                sleep(10);
+		curr = time(NULL);
+                sleep(WAIT_FOR_TALKER);
         }
         // END a section I added
         close(sockfd);
