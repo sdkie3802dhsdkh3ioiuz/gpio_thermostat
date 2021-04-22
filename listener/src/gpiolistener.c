@@ -37,7 +37,7 @@ void *get_in_addr(struct sockaddr *sa)
 int main(int argc, char *argv[])
 {
 	/* ADDED section to declare variable for checking stale signal */
-	struct timeval tv { .tv_sec = WAIT_FOR_TALKER, .tv_usec = 0 };
+	struct timeval tv = { .tv_sec = WAIT_FOR_TALKER, .tv_usec = 0 };
 	time_t curr = time(NULL);
 	time_t prev = curr - 86400;	/* make sure prev is stale */
 	/* end declarations for stale signal checking */
